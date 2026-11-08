@@ -1,0 +1,38 @@
+ELKS fortune + BOFH, version 1.0
+
+Native 8086/8088 executable, compiled for ELKS small-memory model.
+The commands are fortune, fortune computers, fortune bofh, and bofh.
+Use -n NUMBER to select a particular entry, or --help for usage.
+This is a compact new reader, not a full port of fortune-mod's command line.
+
+INSTALL (as root, after extracting this archive)
+  mkdir -p /usr/lib/fortune
+  cp bin/fortune /bin/fortune
+  cp bin/bofh /bin/bofh
+  chmod 755 /bin/fortune /bin/bofh
+  cp lib/fortune/* /usr/lib/fortune/
+
+The archive has no automatic installer and does not change startup files.
+For a fortune on login, add /bin/fortune to your own shell profile if wanted.
+Keep the accompanying licenses with any redistribution.
+
+DATA
+431 general fortunes, 1066 computer fortunes, 453 BOFH excuses.
+The general/computer collections are from fortune-mod; individual entries
+retain their attributions. The BOFH collection is distributed by Debian
+as public domain. These classic collections may contain dated language.
+This product includes software developed by the University of
+California, Berkeley and its contributors.
+
+Indices avoid scanning whole collections on an 8088. Keep each data file
+and its .idx file together. If you edit a data file, remove its .idx or
+regenerate it on a modern host using src/mkindex.py FILE. A custom plain
+text file can be selected by path, with a line containing % separating
+entries. An unindexed file is scanned twice, using constant small memory.
+FORTUNE_DIR overrides the default /usr/lib/fortune location.
+
+BUILD
+In src, run make ELKS_ROOT=/path/to/elks TOOLCHAIN=/path/to/toolchain.
+An ELKS ia16-elf-gcc toolchain and its built libc are required.
+Run make host for a native-host reader, not the ELKS executable.
+The prebuilt executables require no Python or compiler on the target.

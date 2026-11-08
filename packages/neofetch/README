@@ -1,0 +1,34 @@
+neofetch-elks 1.0
+
+Small native C adaptation of the neofetch system-summary idea for real-mode
+ELKS on 8086/8088 PCs. This is not the upstream Bash script and does not
+implement its config files, modules or full command-line interface.
+
+Copy neofetch to /bin on an ELKS filesystem, or run it from its current
+folder. This package does not contain an installer or write any SD card.
+
+  neofetch --tandy
+  neofetch --stdout
+  neofetch --no-color
+  neofetch --help
+
+--tandy selects a Tandy 1000 EX / 8088 label; it does not detect hardware.
+OS and machine come from uname. User comes from the current UID. Shell and
+terminal are environment values, not detected processes. ELKS main memory
+and uptime use read-only /dev/kmem queries. If unavailable they say so.
+Memory excludes reserved BIOS/video/kernel space and is not installed RAM.
+Uptime wraps with the 32-bit kernel tick counter (about 497 days at 100 Hz).
+No package counts, clock speed, video mode, sound or GPU capabilities are
+invented. Color is disabled on redirected output, TERM=dumb or NO_COLOR.
+This build targets real mode, not the ELKS 286 protected-mode variant.
+
+Build with an installed ELKS ia16 toolchain and matching ELKS source tree:
+  make ELKS_ROOT=/path/to/elks TOOLCHAIN=/path/to/toolchain
+The ELKS tree must include built elks/tools/bin/elf2elks.
+
+The native target uses -march=i8086. The optional host target is only a
+rendering/CLI check and deliberately does not probe host memory or uptime:
+  make host
+  python3 test_cli.py
+
+MIT licensed; see LICENSE. No upstream Bash runtime is required.

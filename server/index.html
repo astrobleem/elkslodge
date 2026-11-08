@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head><title>ELKSLODGE</title></head><body>
+<h1>ELKSLODGE</h1>
+<p>MicroWeb users are welcome at the ELKSLODGE.</p>
+<p>A private local package shelf for ELKS on 8086 and 8088 computers.
+These programs are ELKS binaries, not DOS executables. MicroWeb can browse
+this page; use ELKS curl and the ELKSLODGE client to install packages.</p>
+<h2>Start here</h2>
+<p>Replace HOST with your local companion's address. In the ELKS shell:</p>
+<pre>export ELKSLODGE_SERVER=http://HOST:8086
+curl -o /tmp/get http://HOST:8086/get
+sh /tmp/get
+elkslodge list
+elkslodge install all</pre>
+<p>Existing client? Download <a href="upgrade">upgrade</a> to /tmp/lodgeup,
+then run sh /tmp/lodgeup. Keep power on during installation.</p>
+<h2>Packages</h2>
+<ul>
+<li><a href="neofetch">neofetch</a>: compact native system information.</li>
+<li><a href="tplay">TPLAY</a>: experimental Tandy PSG MIDI player.
+<a href="elksbeat.mid">Original demo MIDI</a>. Physical audio and timing not yet verified.</li>
+<li><a href="fortune">fortune</a> and <a href="bofh">BOFH</a>: quotes and excuses.
+The client installs their required data. Classic collections may contain dated language.</li>
+<li><a href="elksay-1.1/cowsay">cowsay</a> and
+<a href="elksay-1.1/cowthink">cowthink</a>: cow speech and thought bubbles.</li>
+<li><a href="elksay-1.1/elksay">elksay</a> and
+<a href="elksay-1.1/elkthink">elkthink</a>: elk speech and thought bubbles.</li>
+</ul>
+<pre>elkslodge install elksay
+fortune | elksay</pre>
+<p><a href="packages.txt">Plain-text package list</a>.</p>
+<p>This shelf serves preloaded packages. The companion can fetch administrator-configured
+HTTPS artifacts, but no public upstream catalog is configured by default.
+htop is not included.</p>
+<h2>Source and rebuilding</h2>
+<p>Source for every package and the client is freely available in the
+<a href="https://github.com/astrobleem/elkslodge">ELKSLODGE repository</a>.
+Use a modern HTTPS-capable computer for that link, then transfer the files
+locally. Build commands and all application sources are included there.</p>
+<p>The native programs link ELKS libc. Its complete matching
+<a href="https://github.com/astrobleem/elks/tree/e7a56a4334e0ef9a2261d1c2de54db31ba40fdf0">ELKS 0.9.2 source</a>
+and build instructions are available for rebuilding and relinking.</p>
+<h2>Licenses</h2>
+<p>Linked-library terms: <a href="licenses/LGPL-2.0.txt">GNU Library GPL 2</a>,
+<a href="licenses/LGPL-2.1.txt">GNU Lesser GPL 2.1</a>.
+<a href="licenses/libtandy.txt">libtandy license</a>.</p>
+<p><a href="licenses/client.txt">Client MIT license</a>;
+<a href="licenses/packages-neofetch.txt">neofetch</a>;
+<a href="licenses/packages-cowsay.txt">cow and elk programs</a>;
+<a href="licenses/packages-fortune.txt">fortune reader</a>;
+<a href="licenses/fortune-fortune-mod.txt">fortune collections</a>;
+<a href="licenses/fortune-bofh.txt">BOFH collection</a>;
+<a href="licenses/packages-tplay.txt">TPLAY</a>.</p>
+<p>This product includes software developed by the University of California,
+Berkeley and its contributors.</p>
+</body></html>

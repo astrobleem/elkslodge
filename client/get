@@ -1,0 +1,35 @@
+#!/bin/sh
+# First-time ELKSLODGE bootstrap for this trusted LAN.
+umask 077
+server=${ELKSLODGE_SERVER-}
+if test -z "$server"; then
+    if test -f /etc/elkslodge; then server=`cat /etc/elkslodge`; fi
+fi
+if test -z "$server"; then
+    echo Set ELKSLODGE_SERVER to your local companion http://host:port first.
+    exit 1
+fi
+if test -f /bin/elkslodge; then
+    echo ELKSLODGE is already installed. Run elkslodge list.
+    exit 1
+fi
+mkdir /tmp/lodge.get || exit 1
+curl -o /tmp/lodge.get/client "$server/elkslodge-0.4"
+if test $? -ne 0; then
+    echo Download failed. Nothing installed.
+    rm -f /tmp/lodge.get/client
+    rmdir /tmp/lodge.get
+    exit 1
+fi
+n=`wc -c < /tmp/lodge.get/client`
+if test "$n" -ne 10304; then
+    echo Wrong download size. Nothing installed.
+    rm -f /tmp/lodge.get/client
+    rmdir /tmp/lodge.get
+    exit 1
+fi
+chmod 755 /tmp/lodge.get/client || exit 1
+mv /tmp/lodge.get/client /bin/elkslodge || exit 1
+rmdir /tmp/lodge.get
+echo "$server" > /etc/elkslodge
+elkslodge list

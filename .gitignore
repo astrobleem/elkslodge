@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.o
+*.a
+*.sym
+*-host
+/packages/cowsay/cowsay
+/packages/cowsay/cowthink
+/packages/cowsay/elksay
+/packages/cowsay/elkthink
+/packages/neofetch/neofetch
+/packages/fortune/src/fortune
+/packages/tplay/tplay
+
+/server/public/
+/server/catalog.json

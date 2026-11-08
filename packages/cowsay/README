@@ -1,0 +1,61 @@
+cowsay-elks 1.1
+===============
+A small native C adaptation of the classic cowsay for ELKS on 8086/8088.
+It does not need Perl. The cow and formatting conventions come from
+Tony Monroe's cowsay 3.03 (copyright 1999-2000 Tony Monroe):
+https://github.com/tnalpgge/rank-amateur-cowsay
+Distributed under GPL-3.0-or-later; see LICENSE. No warranty.
+The C implementation is newly written, not the full upstream Perl program.
+
+Install
+-------
+Copy bin/cowsay, bin/cowthink, bin/elksay, and bin/elkthink to /bin
+on ELKS, then:
+  chmod 755 /bin/cowsay /bin/cowthink /bin/elksay /bin/elkthink
+
+Examples
+--------
+  elksay Hello ELKS
+  elkthink Thinking about lunch
+  cowsay -f elk Hello ELKS
+  cowsay Hello ELKS
+  echo Hello from stdin | cowsay
+  fortune | cowsay
+  cowsay -W 30 -b An 8088 can moo too
+  cowsay -e ^^ -T vv Hello
+  cowthink -d Thinking about lunch
+  cowsay -n < message.txt
+
+Options
+-------
+-b borg; -d dead; -g greedy; -p paranoid; -s stoned; -t tired;
+-w wired; -y young. These may be grouped, e.g. -bd.
+-e eyes and -T tongue accept up to two printable ASCII characters.
+-W width sets the maximum message columns (1..255; default 40).
+-n preserves lines, expands tabs at eight-column stops and removes CR.
+-f default or -f default.cow selects the built-in cow.
+-f elk or -f elk.cow selects the built-in elk.
+Invoking as elksay or elkthink selects the elk by default.
+-l lists available cows; -h or --help gives help; --version gives version.
+-- ends option parsing. Remaining arguments are joined with spaces.
+No arguments reads stdin. The executable name cowthink selects thoughts.
+
+Limits
+------
+ASCII only. Input is limited to 8191 bytes and 1024 output lines. Tab
+expansion is also limited to 8191 bytes. With -n, each line is limited to
+255 columns. Oversized or non-ASCII input is rejected, not silently cut.
+The default cow and an original ASCII elk are built in: external Perl
+.cow files and COWPATH
+are not supported. Wrapping is simple whitespace-based wrapping, with
+long words split at the requested width, rather than Perl Text::Wrap's
+exact behavior. This is a compact adaptation, not full upstream parity.
+Select a width of 76 or less for an 80-column screen (bubble adds 4).
+
+Build
+-----
+An ELKS libc/toolchain is required; set these paths for your checkout:
+  make ELKS_ROOT=/path/to/elks TOOLCHAIN=/path/to/toolchain
+The build targets i8086, small model, ELKS libc. For host-side CLI checks:
+  make host
+  python3 test_cli.py

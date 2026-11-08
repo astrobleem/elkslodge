@@ -17,8 +17,10 @@ does not make the ELKS executables DOS-compatible.
 - `packages/fortune/`: fortune and BOFH reader, data, and original notices.
 - `packages/cowsay/`: cowsay, cowthink, elksay and elkthink in native C.
 - `packages/tplay/`: experimental Tandy PSG MIDI playback and original demo.
+- `packages/nanox-video/`: experimental Tandy/PCjr color source patch and build instructions, not an installer package.
 
-Each package includes source and prebuilt ELKS executables under `bin/`.
+The installable packages include source and prebuilt ELKS executables under `bin/`.
+The Nano-X video directory is source-only and is not in the client catalog.
 The client executable is `client/elkslodge`. These target ELKS 0.9.2 on
 8086/8088 PCs, not DOS, Windows, a modern Linux host, or ELKS protected mode.
 No OS disk images, firmware, personal server configuration, or ROMs are here.
@@ -51,7 +53,11 @@ host sign-comparison warnings. Hardware audio/timing remain experimental.
 
 The optional kernel reservation is separately maintained in
 [the ELKS fork's tandy-video-v0.9.2 branch](https://github.com/astrobleem/elks/tree/tandy-video-v0.9.2).
-It is experimental source, not a bundled kernel update. Read its limitations
+Expanded PCjr boot and video reservation are in the separate
+[pcjr-video-v0.9.2 branch](https://github.com/astrobleem/elks/tree/pcjr-video-v0.9.2).
+Neither kernel branch alone supplies the color desktop; the separate Microwindows
+source patch is in `packages/nanox-video/`.
+This is experimental source, not a bundled kernel update. Read its limitations
 before building it. The lodge does not silently alter the kernel or boot files.
 
 ## Licenses and rebuilding linked libraries

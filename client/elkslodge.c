@@ -1,4 +1,4 @@
-/* ELKSLODGE 0.4: curated, recoverable installs for ELKS/8086. */
+/* ELKSLODGE 0.5: curated, recoverable installs for ELKS/8086. */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,7 +11,7 @@
 #define WORK "/.lodge"
 struct item { const char *url, *dest; long size; int mode; };
 static struct item files[] = {
- {"neofetch","/bin/neofetch",5552L,0755},
+ {"neofetch-1.1","/bin/neofetch",5840L,0755},
  {"tplay","/bin/tplay",18848L,0755},
  {"elksbeat.mid","/usr/lib/elksbeat.mid",954L,0644},
  {"fortune","/bin/fortune",7936L,0755},
@@ -137,7 +137,7 @@ int main(int argc,char **argv) {
   config=loadserver();
   if(config<0){puts(config==-2?"No server configured. Set ELKSLODGE_SERVER or /etc/elkslodge to http://host:port":"Invalid server. Use http://host:port in ELKSLODGE_SERVER or /etc/elkslodge");return 1;}
  }
- if(argc==2&&!strcmp(argv[1],"list")){puts("ELKSLODGE 0.4 - ELKS/8086 packages\nneofetch  Native system information\ntplay     Experimental Tandy PSG MIDI player + demo MIDI\nfortune   Fortune + BOFH and all indexed data\nbofh      Alias for the complete fortune package\ncowsay    Talking cow + cowthink companion\ncowthink  Alias for the complete cowsay package\nelksay    Talking elk + elkthink companion\nelkthink  Alias for the complete elksay package\nall       Install everything above\n\nThis release uses pinned package sizes, not cryptographic authentication.");printf("Server: %s\n",server);return 0;}
+ if(argc==2&&!strcmp(argv[1],"list")){puts("ELKSLODGE 0.5 - ELKS/8086 packages\nneofetch  Native system information\ntplay     Experimental Tandy PSG MIDI player + demo MIDI\nfortune   Fortune + BOFH and all indexed data\nbofh      Alias for the complete fortune package\ncowsay    Talking cow + cowthink companion\ncowthink  Alias for the complete cowsay package\nelksay    Talking elk + elkthink companion\nelkthink  Alias for the complete elksay package\nall       Install everything above\n\nThis release uses pinned package sizes, not cryptographic authentication.");printf("Server: %s\n",server);return 0;}
  if(argc==3&&!strcmp(argv[1],"install"))return install(argv[2]);
- puts("ELKSLODGE 0.4\n  elkslodge list\n  elkslodge install neofetch|tplay|fortune|bofh|cowsay|cowthink|elksay|elkthink|all\n  elkslodge recover\nDownloads are staged before installation. Keep power on during install.");return argc==1?0:1;
+ puts("ELKSLODGE 0.5\n  elkslodge list\n  elkslodge install neofetch|tplay|fortune|bofh|cowsay|cowthink|elksay|elkthink|all\n  elkslodge recover\nDownloads are staged before installation. Keep power on during install.");return argc==1?0:1;
 }

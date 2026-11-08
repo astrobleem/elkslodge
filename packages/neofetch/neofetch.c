@@ -17,8 +17,10 @@
 #endif
 
 static int color, plain, row;
+enum profile { GENERIC, TANDY, PCJR };
+static enum profile selected_profile;
 static const char *logo[] = {
-    "  __________", " |  TANDY   |", " |   ELKS   |", " |__________|",
+    "  __________", " |    PC    |", " |   ELKS   |", " |__________|",
     "    |____|", "  /________/", "", "", "", "", ""
 };
 
@@ -37,7 +39,10 @@ static void field(const char *key, const char *value)
 {
     if (!plain) {
         if (color) fputs("\033[36m", stdout);
-        printf("%-14s", row < 11 ? logo[row] : "");
+        if (row == 1 && selected_profile != GENERIC)
+            printf("%-14s", selected_profile == PCJR ?
+                   " | IBM PCjr |" : " |  TANDY   |");
+        else printf("%-14s", row < 11 ? logo[row] : "");
         if (color) fputs("\033[0m", stdout);
     }
     if (color) fputs("\033[1;33m", stdout);
@@ -84,7 +89,7 @@ static void resources(void)
 
 int main(int argc, char **argv)
 {
-    int i, tandy = 0;
+    int i;
     char text[100];
     const char *s;
     struct utsname u;
@@ -95,13 +100,21 @@ int main(int argc, char **argv)
     for (i = 1; i < argc; i++) {
         if (!strcmp(argv[i], "--stdout")) { plain = 1; color = 0; }
         else if (!strcmp(argv[i], "--no-color")) color = 0;
-        else if (!strcmp(argv[i], "--tandy")) tandy = 1;
+        else if (!strcmp(argv[i], "--tandy") || !strcmp(argv[i], "--pcjr")) {
+            enum profile requested = !strcmp(argv[i], "--pcjr") ? PCJR : TANDY;
+            if (selected_profile != GENERIC && selected_profile != requested) {
+                fputs("neofetch: select only one hardware profile\n", stderr);
+                return 2;
+            }
+            selected_profile = requested;
+        }
         else if (!strcmp(argv[i], "--version")) {
-            puts("neofetch-elks 1.0 (native C subset; not upstream Bash)");
+            puts("neofetch-elks 1.1 (native C subset; not upstream Bash)");
             return 0;
         } else if (!strcmp(argv[i], "--help")) {
-            puts("Usage: neofetch [--tandy] [--stdout] [--no-color]");
+            puts("Usage: neofetch [--tandy | --pcjr] [--stdout] [--no-color]");
             puts("  --tandy     Label the user-selected Tandy 1000 EX / 8088 profile");
+            puts("  --pcjr      Label the user-selected IBM PCjr / 8088 profile");
             puts("  --stdout    Text only, without ASCII art or ANSI colors");
             puts("  --no-color  ASCII art without ANSI colors");
             puts("  --version   Show port version");
@@ -128,7 +141,8 @@ int main(int argc, char **argv)
         field("Host", "unavailable"); field("OS", "unavailable");
         field("Machine", "unavailable");
     }
-    if (tandy) field("Profile", "Tandy 1000 EX / 8088 (selected)");
+    if (selected_profile == PCJR) field("Profile", "IBM PCjr / 8088 (selected)");
+    else if (selected_profile == TANDY) field("Profile", "Tandy 1000 EX / 8088 (selected)");
     else field("Profile", "ELKS real-mode PC");
     pw = getpwuid(getuid());
     if (pw) field("User", pw->pw_name);
@@ -137,6 +151,6 @@ int main(int argc, char **argv)
     /* These are the user's declared environment, not process detection. */
     field("Shell env", getenv("SHELL"));
     field("Terminal", getenv("TERM"));
-    field("Port", "neofetch-elks 1.0");
+    field("Port", "neofetch-elks 1.1");
     return ferror(stdout) ? 1 : 0;
 }

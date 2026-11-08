@@ -11,7 +11,7 @@ does not make the ELKS executables DOS-compatible.
 
 ## What is here
 
-- `client/`: ELKSLODGE 0.4, a native curated installer, bootstrap and upgrade.
+- `client/`: ELKSLODGE 0.5, a native curated installer, bootstrap and upgrade.
 - `server/`: the modern Python companion and self-host setup instructions.
 - `packages/neofetch/`: system summary without invented hardware facts.
 - `packages/fortune/`: fortune and BOFH reader, data, and original notices.
@@ -42,7 +42,7 @@ Set `ELKS_ROOT` and `TOOLCHAIN` to a built ELKS 0.9.2 source checkout and ia16
 cross-toolchain, then follow the package's Makefile or build script.
 Cowsay/elksay and neofetch also have `make host` and `python3 test_cli.py`.
 The client also includes isolated configuration and release checks in client/tests.
-Portable client 0.4 passed ELKS guest bootstrap, upgrade, package installation,
+Portable client 0.5 passed ELKS guest bootstrap, upgrade, package installation,
 truncation rejection and interrupted-install recovery checks.
 These are host-side CLI checks, not ELKS hardware emulation. The package
 native rebuilds byte-matched their earlier guest-tested LAN payloads.
@@ -74,3 +74,9 @@ Build that checkout's libc/toolchain following its BUILD.md, then rebuild a
 package with the resulting ELKS_ROOT and TOOLCHAIN. Preserve all applicable
 notices when redistributing. Everything is supplied without warranty under
 its respective license.
+
+Neofetch 1.1 adds `--pcjr` and neutral default PC artwork. Its native output
+was checked in a generic ELKS QEMU guest, including console colors; this is
+not a physical PCjr compatibility test. Older client download routes are
+preserved. Compatibility binary sources remain in the
+[0.4 commit](https://github.com/astrobleem/elkslodge/tree/7cf87883d14fa154c89cfa13580b1f4106bfbdbd).

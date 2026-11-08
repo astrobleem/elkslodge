@@ -48,10 +48,10 @@ Do not compile and run this installer as a host application: its destinations
 are real absolute ELKS paths such as `/bin`.
 
 The `get` and `upgrade` scripts pin the exact released binary length and download
-`/elkslodge-0.4`. After rebuilding, update their numeric length checks before
+`/elkslodge-0.5`. After rebuilding, update their numeric length checks before
 publishing a matching release. Do not replace an immutable published endpoint
 with different bytes; use a new release name and update the scripts together.
-Release 0.4 requires explicit server configuration; it has no default server.
+Release 0.4 and later require explicit server configuration; it has no default server.
 
 ## Safety and limitations
 
@@ -80,3 +80,8 @@ Host checks (syntax, release lengths, and isolated configuration parsing; never 
 
     python3 tests/check_static.py
     python3 tests/check_config.py
+
+Release 0.5 installs neofetch 1.1 from the immutable `/neofetch-1.1` route.
+Use `neofetch --pcjr` for the explicit IBM PCjr profile or `--tandy` for the
+Tandy profile; these select presentation, not automatic hardware detection.
+Earlier clients continue using the original neofetch endpoint and payload.

@@ -1,5 +1,5 @@
 #!/bin/sh
-# ELKSLODGE 0.4 upgrade; keep the configured local companion.
+# ELKSLODGE 0.5 upgrade; keep the configured local companion.
 umask 077
 server=${ELKSLODGE_SERVER-}
 if test -z "$server"; then
@@ -19,7 +19,7 @@ if test -d /.lodge; then
     exit 1
 fi
 mkdir /bin/.lodgeup || exit 1
-curl -o /bin/.lodgeup/new "$server/elkslodge-0.4"
+curl -o /bin/.lodgeup/new "$server/elkslodge-0.5"
 if test $? -ne 0; then
     echo Download failed. Existing client unchanged.
     rm -f /bin/.lodgeup/new
@@ -27,7 +27,7 @@ if test $? -ne 0; then
     exit 1
 fi
 n=`wc -c < /bin/.lodgeup/new`
-if test "$n" -ne 10304; then
+if test "$n" -ne 10320; then
     echo Wrong download size. Existing client unchanged.
     rm -f /bin/.lodgeup/new
     rmdir /bin/.lodgeup

@@ -14,7 +14,7 @@ if test -f /bin/elkslodge; then
     exit 1
 fi
 mkdir /tmp/lodge.get || exit 1
-curl -o /tmp/lodge.get/client "$server/elkslodge-0.4"
+curl -o /tmp/lodge.get/client "$server/elkslodge-0.5"
 if test $? -ne 0; then
     echo Download failed. Nothing installed.
     rm -f /tmp/lodge.get/client
@@ -22,7 +22,7 @@ if test $? -ne 0; then
     exit 1
 fi
 n=`wc -c < /tmp/lodge.get/client`
-if test "$n" -ne 10304; then
+if test "$n" -ne 10320; then
     echo Wrong download size. Nothing installed.
     rm -f /tmp/lodge.get/client
     rmdir /tmp/lodge.get

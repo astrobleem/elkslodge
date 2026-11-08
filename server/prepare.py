@@ -17,7 +17,7 @@ def prepare(output, catalog_path):
                          (client / 'elkslodge.c').read_text())
     if len(entries) != 15:
         raise ValueError('Unexpected client package map; review prepare.py before staging')
-    sources = {'neofetch': packages/'neofetch/bin/neofetch',
+    sources = {'neofetch-1.1': packages/'neofetch/bin/neofetch',
                'tplay': packages/'tplay/bin/tplay',
                'elksbeat.mid': packages/'tplay/elksbeat.mid',
                'fortune': packages/'fortune/bin/fortune',
@@ -30,8 +30,9 @@ def prepare(output, catalog_path):
         source = sources.get(route)
         if source is None or source.stat().st_size != int(size):
             raise ValueError('Missing or size-mismatched payload: ' + route)
-    if (client/'elkslodge').stat().st_size != 10304:
-        raise ValueError('Expected reviewed 0.4 client (10304 bytes)')
+    expected = re.search(r'if test \"\$n\" -ne (\d+);', (client/'get').read_text())
+    if expected is None or (client/'elkslodge').stat().st_size != int(expected.group(1)):
+        raise ValueError('Client size must match reviewed bootstrap pin')
     output.mkdir(parents=True, exist_ok=True)
     catalog = {}
     for route, size in entries:
@@ -39,10 +40,17 @@ def prepare(output, catalog_path):
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(sources[route], target)
         catalog[route] = {'size': int(size), 'url': None}
+    legacy = {'neofetch': (packages/'neofetch/bin/neofetch-1.0', 5552),
+              'elkslodge-0.4': (client/'releases/elkslodge-0.4', 10304)}
+    for route, (source, size) in legacy.items():
+        if source.stat().st_size != size:
+            raise ValueError('Invalid compatibility payload: ' + route)
+        shutil.copyfile(source, output/route)
+        catalog[route] = {'size': size, 'url': None}
     for name in ('get', 'upgrade', 'elkslodge'):
         shutil.copyfile(client/name, output/name)
-    shutil.copyfile(client/'elkslodge', output/'elkslodge-0.4')
-    for name in ('get', 'upgrade', 'elkslodge', 'elkslodge-0.4'):
+    shutil.copyfile(client/'elkslodge', output/'elkslodge-0.5')
+    for name in ('get', 'upgrade', 'elkslodge', 'elkslodge-0.5'):
         catalog[name] = {'size': (output/name).stat().st_size, 'url': None}
     shutil.copyfile(HERE/'index.html', output/'index.html')
     lines = ['ELKSLODGE packages (native ELKS / 8086)',

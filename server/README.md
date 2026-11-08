@@ -7,7 +7,7 @@ From the repository root, stage the reviewed prebuilt payloads:
 
     python3 server/prepare.py
 
-This copies client 0.4, its bootstrap/upgrade scripts, package binaries, data
+This copies client 0.5, its bootstrap/upgrade scripts, package binaries, data
 and license notices into `server/public/`. It generates `server/catalog.json`
 with reviewed client-compatible byte lengths and null upstream URLs. Files
 already at those output paths are replaced; use `--output` and `--catalog`
@@ -60,3 +60,8 @@ parent traversal, symlink paths and query-based proxy requests are rejected.
 Run it under your existing service manager if desired. No service or lingering
 setting is installed or enabled automatically. New companion code is MIT;
 package licenses remain separate and are copied by the staging helper.
+
+Release 0.5 serves neofetch 1.1 at `/neofetch-1.1`. The original `/neofetch`
+(1.0) and `/elkslodge-0.4` payloads remain available for older clients.
+The source for these compatibility binaries is retained in the repository
+[0.4 commit](https://github.com/astrobleem/elkslodge/tree/7cf87883d14fa154c89cfa13580b1f4106bfbdbd).

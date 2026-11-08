@@ -1,4 +1,4 @@
-neofetch-elks 1.0
+neofetch-elks 1.1
 
 Small native C adaptation of the neofetch system-summary idea for real-mode
 ELKS on 8086/8088 PCs. This is not the upstream Bash script and does not
@@ -7,12 +7,17 @@ implement its config files, modules or full command-line interface.
 Copy neofetch to /bin on an ELKS filesystem, or run it from its current
 folder. This package does not contain an installer or write any SD card.
 
+  neofetch --pcjr
   neofetch --tandy
   neofetch --stdout
   neofetch --no-color
   neofetch --help
 
---tandy selects a Tandy 1000 EX / 8088 label; it does not detect hardware.
+--pcjr selects an IBM PCjr / 8088 label and logo. --tandy selects a Tandy
+1000 EX / 8088 label and logo. These are explicit user selections, not
+hardware detection; conflicting profiles are rejected. Without either
+option the label and logo stay generic. uname's i8088 machine value cannot
+distinguish a PCjr from a Tandy or another 8088 PC.
 OS and machine come from uname. User comes from the current UID. Shell and
 terminal are environment values, not detected processes. ELKS main memory
 and uptime use read-only /dev/kmem queries. If unavailable they say so.
@@ -20,6 +25,11 @@ Memory excludes reserved BIOS/video/kernel space and is not installed RAM.
 Uptime wraps with the 32-bit kernel tick counter (about 497 days at 100 Hz).
 No package counts, clock speed, video mode, sound or GPU capabilities are
 invented. Color is disabled on redirected output, TERM=dumb or NO_COLOR.
+Color uses ANSI terminal escapes through ELKS; it does not probe or program
+PCjr graphics hardware. A PCjr still needs a working compatible ELKS kernel,
+console and sufficient usable RAM. This profile does not add kernel support,
+reserve video memory or certify a physical machine. No PCjr hardware run has
+been performed for this release.
 This build targets real mode, not the ELKS 286 protected-mode variant.
 
 Build with an installed ELKS ia16 toolchain and matching ELKS source tree:

@@ -1,5 +1,15 @@
 # ELKSLODGE
 
+## Deprecated: use EPT
+
+ELKSLODGE's installer is deprecated in favor of
+[EPT (ELKS Package Tool)](https://github.com/sammothxc/ept), the superior choice
+for ELKS package management. EPT provides dynamic repositories, package search,
+upgrades, removal, and repair instead of ELKSLODGE's fixed package list.
+
+The source, packages, and documentation below remain available for reference
+and reuse. This notice does not mean these packages have been migrated to EPT.
+
 A small lodge for ELKS software: native 8086 programs, their source, and a
 self-hosted companion for getting them onto an old PC. MicroWeb visitors are
 welcome too: the catalog is ordinary HTML, with no JavaScript requirement.

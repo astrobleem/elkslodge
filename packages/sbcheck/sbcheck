@@ -1,0 +1,46 @@
+#!/bin/sh
+# Original standalone check, MIT; see repository LICENSE.
+# Requires stock ELKS audiomix and play. No DMA, IRQ, firmware or mixer code
+# is duplicated here. Use on an otherwise idle real-mode ELKS sound device.
+# audiomix's DSP reset/version waits are finite. play uses /dev/dsp and its
+# bounded completion waits: this is low/8-bit DMA + IRQ playback, NOT direct DAC.
+if [ "$1" != "--exclusive" ] || [ "$#" -gt 3 ]; then
+    echo 'usage: sbcheck --exclusive [0x220 [SBCHECK.U8]]'
+    echo 'Stop other sound programs first: the probe resets the DSP.'
+    echo 'Generate the sample on the host: python3 generate.py new-directory'
+    echo 'Kernel /dev/dsp resources come from bootopts sb=IRQ,PORT,LOW_DMA.'
+    echo 'For matching hardware at base 0x220, IRQ 5, low DMA 1: sb=5,220,1.'
+    echo 'Requires a kernel built with CONFIG_CHAR_DEV_DSP=y (default is off).'
+    echo 'Use matching hardware settings; no firmware or bootopts are changed.'
+    exit 2
+fi
+port=${2:-0x220}
+pcm=${3:-./SBCHECK.U8}
+case "$port" in
+    0x220|0x240|0x260|0x280) ;;
+    *) echo 'Use the known configured SB base: 0x220, 0x240, 0x260 or 0x280.'; exit 2 ;;
+esac
+if [ ! -r "$pcm" ]; then echo "Cannot read $pcm"; exit 1; fi
+echo "Bounded DSP reset/version probe at $port; exclusive foreground use."
+probe=$(/bin/audiomix -p "$port" 2>&1)
+rc=$?
+echo "$probe"
+if [ "$rc" -ne 0 ]; then echo 'DSP probe failed; playback skipped.'; exit 1; fi
+case "$probe" in
+    *'dsp 0.'*) echo 'No valid DSP version; playback skipped.'; exit 1 ;;
+esac
+echo 'Playing 500 Hz, pause, 1000 Hz: U8 mono, 8000 Hz, low DMA via /dev/dsp.'
+echo 'The probe base must match the kernel boot configuration.'
+result=$(/bin/play -r 8000 -b 4096 "$pcm" 2>&1)
+rc=$?
+if [ -n "$result" ]; then echo "$result"; fi
+# Stock play can print a SYNC failure without changing its exit status.
+# This exact 8000 Hz sample needs no normal rate-quantisation diagnostic.
+if [ "$rc" -ne 0 ] || [ -n "$result" ]; then
+    echo 'Playback failed or reported diagnostics; do not count this as a clean check.'
+    echo 'A /dev/dsp node alone is insufficient: CONFIG_CHAR_DEV_DSP must be enabled.'
+    exit 1
+fi
+echo 'Stock play returned cleanly. Verify that BOTH tones were heard/captured.'
+echo 'A clean return alone does not prove the physical audio output.'
+exit 0
